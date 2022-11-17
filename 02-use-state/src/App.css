@@ -43,3 +43,8 @@
   padding: 5px;
   color: #444;
 }
+
+.label-green {
+  background-color: green;
+  color: white;
+}
