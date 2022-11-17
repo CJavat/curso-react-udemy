@@ -4,6 +4,7 @@ import { useEffect } from "react";
 export const AjaxComponent = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [errores, setErrores] = useState("");
 
   // Generico o Basico.
   const getUsuariosEstaticos = () => {
@@ -55,6 +56,7 @@ export const AjaxComponent = () => {
       }, 2000);
     } catch (error) {
       console.log("Hubo un error al recoger los datos... " + error);
+      setErrores(error.message);
     }
   };
 
@@ -64,10 +66,13 @@ export const AjaxComponent = () => {
     getUsuariosAjaxAsyncAwait();
   }, []);
 
-  if (cargando === true) {
+  if (errores !== "") {
+    // Cuando pasa algún error.
+    return <div className="errores">{errores}</div>;
+  } else if (cargando === true) {
     // Cuando esta todo cargando.
     return <div className="cargando">Cargando datos...</div>;
-  } else {
+  } else if (cargando === false && errores === "") {
     // Cuando todo ha ido bien.
     return (
       <div>
