@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { GuardarEnStorage } from "../helpers/GuardarEnStorage";
 
-export const Crear = () => {
-  const tituloComponente = "Añadir pelicula";
+export const Crear = ({ setListadoState }) => {
+  // const tituloComponente = "Añadir pelicula";
 
   const [peliState, setPeliState] = useState({
     titulo: "",
@@ -25,8 +26,20 @@ export const Crear = () => {
       descripcion,
     };
 
+    // Guardar Estado.
     setPeliState(peli);
-    console.log(peliState);
+
+    // Actualizar el estado del listado principal.
+    setListadoState((elementos) => {
+      return [...elementos, peli];
+    });
+
+    // Guardar en el almacenamiento local.
+    GuardarEnStorage("pelis", peli);
+
+    // Vaciar datos del formulario.
+    const formulario = document.getElementById("formularioCrearPeliculas");
+    formulario.reset();
   };
 
   return (
@@ -37,12 +50,13 @@ export const Crear = () => {
         {titulo && descripcion && "Has creado la pelicula: " + titulo}
       </strong>
 
-      <form onSubmit={conseguirDatosForm}>
+      <form id="formularioCrearPeliculas" onSubmit={conseguirDatosForm}>
         <input type="text" id="titlo" name="titulo" placeholder="Titulo" />
         <textarea
           id="descripcion"
           name="descripcion"
           placeholder="Descripción"
+          // defaultValue={valorPrueba}
         ></textarea>
         <input type="submit" id="save" value="Guardar" />
       </form>
