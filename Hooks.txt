@@ -1,0 +1,16 @@
+HOOKS APRENDIDOS:
+
+UseState: Sirve para guardar los cambios en la variable.
+Sintaxis: const [dato, setDato] = useState('inicializacion');
+
+UseEffect: Sirve para detectar cuando hay un cambio en la pagina o para ejecutar algo las veces que quieras
+Sintaxis: useEffect(() => {
+            Codigo a ejecutar.
+          }, [Las veces que se va a ejecutar o cuando haya algun cambio en esa variable]);
+
+UseParams: Para obtener los parametros que son enviados desde las rutas.
+Sintaxis: variable = useParams();
+Para poner parametros por defecto: const [var1 = "parametroPorDefecto1", var2 = "parametroPorDefecto2"] = useParams();
+
+UseNavigate: Sirve para redireccionarte a otras rutas.
+Sintaxis: const variableURL = useNavigate(); variableURL("/ruta1/subruta/subsubruta");
