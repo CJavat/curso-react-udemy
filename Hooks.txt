@@ -20,3 +20,5 @@ Sintaxis: const miReferencia = useRef();
 Asignacion de la referencia: <input ref={miReferencia}>
 Y ya con esa referencia se le puede hacer lo que quieras.
 
+useMemo: 
+Sintaxis: 
