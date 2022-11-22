@@ -20,5 +20,30 @@ Sintaxis: const miReferencia = useRef();
 Asignacion de la referencia: <input ref={miReferencia}>
 Y ya con esa referencia se le puede hacer lo que quieras.
 
-useMemo: 
-Sintaxis: 
+memo: Sirve para que el componente no se este cargando constantemente. solo cuando hay un cambio se va a actualizar/renderizar.
+Sintaxis: memo(); // ira al principio despues del nombre del componente. Ejemplo: const componente = memo(...);
+
+useMemo: Sirve para que no cargue de nuevo todo lo del componente, sino que solo vuelve a cargar lo que haya sido actualizado.
+Sintaxis: const memoVariable = useMemo(() => variosDatos(contador), [contador]);
+// Se crea la variable de memo. primero es la variable a la que se le va a memorizar para que no se recargue cuando hay cambios que no sea a el.
+// Luego, entre [] se le pone cuando se va a ejecutar (cuando contador tenga un cambio se va a ejecutar useMemo).
+
+useCallback: Nos permite memorizar funciones, no solo variables. (Es parecido a UseMemo).
+Sintaxis: const funcionConHook = useCallback(() => {//Funcion a ejecutar}, [pagina]);
+// Primero se va a crear la funcion que solo queremos se ejecute cuando sea necesario. luego se le debe de poner "useCallback" antes de las llaves.
+// Despues escribes lo que se va a ejecutar en la funcion.
+// Por ultimo entre [] se pone lo que se actualice para poder actualizar esa funcion y renderizarla de nuevo.
+
+useLayoutEffect: Es lo mismo que useEffect, la diferencia es que useLayoutEffect se ejecuta de manera asincrona.
+Sintaxis: useEffect(() => { // Funciona igual que useEffect.
+            Codigo a ejecutar.
+          }, [Las veces que se va a ejecutar o cuando haya algun cambio en esa variable]);
+
+useReducer:
+Sintaxis:
+
+useContext:
+Sintaxis:
+
+useld:
+Sintaxis:

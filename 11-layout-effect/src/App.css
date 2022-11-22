@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 10vmin;
+  height: 40vmin;
   pointer-events: none;
 }
 
@@ -37,8 +37,9 @@
   }
 }
 
-input[type="text"],
-input[type="submit"] {
-  padding: 20px;
-  width: 50%;
+#caja {
+  width: 200px;
+  height: 200px;
+  background-color: #61dafb;
+  color: black;
 }
