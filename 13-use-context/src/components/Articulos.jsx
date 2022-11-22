@@ -1,5 +1,10 @@
 import React from "react";
 
 export const Articulos = () => {
-  return <div>Articulos</div>;
+  return (
+    <div>
+      <h1>Articulos</h1>
+      <p>Página de Articulos</p>
+    </div>
+  );
 };

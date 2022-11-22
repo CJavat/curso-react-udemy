@@ -1,5 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { PruebaContext } from "../context/PruebaContext";
 
 export const Contacto = () => {
-  return <div>Contacto</div>;
+  const datoDesdeElContexto = useContext(PruebaContext);
+  return (
+    <div>
+      <h1>Contacto</h1>
+      <p>Página de Contacto</p>
+      <p>
+        {/* Valor compartido: <pre>{JSON.stringify(datoDesdeElContexto)}</pre> */}
+      </p>
+    </div>
+  );
 };

@@ -1,13 +1,31 @@
 import "./App.css";
+import { useState } from "react";
+import { PruebaContext } from "./context/PruebaContext";
 import { AppRouter } from "./router/AppRouter";
 
 function App() {
+  const [usuario, setUsuario] = useState({
+    nombre: "Daniel",
+    web: "javato.com",
+  });
+
+  const curso = {
+    id: 1,
+    titulo: "Master en TypeScript",
+    contenido: "Muchas horas de contenido...",
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Aprendiendo a usar el useContext</h1>
+      <h1>Aprendiendo a usar el useContext</h1>
+      <PruebaContext.Provider
+        value={{
+          usuario,
+          setUsuario,
+        }}
+      >
         <AppRouter />
-      </header>
+      </PruebaContext.Provider>
     </div>
   );
 }
