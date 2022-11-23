@@ -43,7 +43,8 @@ useReducer:
 Sintaxis:
 
 useContext: Funciona para pasarle datos de un componente a otro. "Hacer un componente global."
-Sintaxis: 
+Sintaxis: const variableContext = useContext(Componente_Context);
+Componente Context: export const Componente_Context = createContext(null);
 
-useld:
-Sintaxis:
+useld: Sirve para crearte IDs.
+Sintaxis: const variable = useld();
