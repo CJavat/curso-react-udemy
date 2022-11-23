@@ -11,7 +11,6 @@ export const Inicio = () => {
       <p>
         Nombre: {usuario.nombre} - {usuario.web}
       </p>
-      <p>{/* Valor compartido: <strong>{compartida.titulo}</strong> */}</p>
     </div>
   );
 };

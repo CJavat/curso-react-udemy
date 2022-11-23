@@ -34,7 +34,7 @@ export const AppRouter = () => {
               <NavLink to="/contacto">Contacto</NavLink>
             </li>
 
-            {usuario.username !== null ? (
+            {usuario.hasOwnProperty("username") && usuario.username !== null ? (
               <>
                 <li>
                   <NavLink to="/">{usuario.username}</NavLink>
@@ -44,11 +44,7 @@ export const AppRouter = () => {
                     href="/#"
                     onClick={(e) => {
                       e.preventDefault();
-                      setUsuario({
-                        username: null,
-                        nombre: "Daniel",
-                        web: "javato.com",
-                      });
+                      setUsuario({});
                     }}
                   >
                     Cerrar Sesión
