@@ -42,8 +42,8 @@ Sintaxis: useEffect(() => { // Funciona igual que useEffect.
 useReducer:
 Sintaxis:
 
-useContext:
-Sintaxis:
+useContext: Funciona para pasarle datos de un componente a otro. "Hacer un componente global."
+Sintaxis: 
 
 useld:
 Sintaxis:

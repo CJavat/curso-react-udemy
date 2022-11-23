@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from "react";
 import { Routes, Route, NavLink, BrowserRouter } from "react-router-dom";
 import { Acerca } from "../components/Acerca";
 import { Articulos } from "../components/Articulos";
@@ -6,8 +7,11 @@ import { Contacto } from "../components/Contacto";
 import { Error404 } from "../components/Error404";
 import { Inicio } from "../components/Inicio";
 import { Login } from "../components/Login";
+import { PruebaContext } from "../context/PruebaContext";
 
 export const AppRouter = () => {
+  const { usuario, setUsuario } = useContext(PruebaContext);
+
   return (
     <BrowserRouter>
       <header className="header">
@@ -29,9 +33,31 @@ export const AppRouter = () => {
             <li>
               <NavLink to="/contacto">Contacto</NavLink>
             </li>
-            <li>
+
+            {usuario.username !== null ? (
+              <>
+                <li>
+                  <NavLink to="/">{usuario.username}</NavLink>
+                </li>
+                <li>
+                  <a
+                    href="/#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setUsuario({
+                        username: null,
+                        nombre: "Daniel",
+                        web: "javato.com",
+                      });
+                    }}
+                  >
+                    Cerrar Sesión
+                  </a>
+                </li>
+              </>
+            ) : (
               <NavLink to="/login">Identificate</NavLink>
-            </li>
+            )}
           </ul>
         </nav>
       </header>

@@ -5,6 +5,7 @@ import { AppRouter } from "./router/AppRouter";
 
 function App() {
   const [usuario, setUsuario] = useState({
+    username: "Javato",
     nombre: "Daniel",
     web: "javato.com",
   });
