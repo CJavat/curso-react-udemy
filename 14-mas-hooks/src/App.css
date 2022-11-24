@@ -8,3 +8,36 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.mi-formulario input, 
+.mi-formulario textarea {
+  display: block;
+  width: 80%;
+  max-width: 300px;
+  margin: 15px auto;
+  padding: 10px;
+}
+
+.mi-formulario input[type="submit"] {
+  width: 40%;
+  cursor: pointer;
+  margin-bottom: 100px;
+  background-color: green;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+}
+
+.mi-formulario input[type="submit"]:hover {
+  background-color: rgb(62, 182, 62);
+}
+
+.codigo {
+  font-size: 12px;
+}
+
+.enviado {
+  background-color: green;
+  color: white;
+  padding: 5px;
+}
