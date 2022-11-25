@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const { validarArticulo } = require("../helpers/validar");
 const Articulo = require("../models/Articulo");
 
@@ -220,16 +221,63 @@ const subir = (req, res) => {
         }
 
         // Devolver respuesta.
-        return res
-          .status(200)
-          .json({
-            status: "success",
-            articulo: articuloActualizado,
-            fichero: req.file,
-          });
+        return res.status(200).json({
+          status: "success",
+          articulo: articuloActualizado,
+          fichero: req.file,
+        });
       }
     );
   }
+};
+
+const imagen = (req, res) => {
+  let fichero = req.params.fichero;
+  let ruta_fisica = "./imagenes/articulos/" + fichero;
+
+  fs.stat(ruta_fisica, (error, existe) => {
+    if (existe) {
+      return res.sendFile(path.resolve(ruta_fisica));
+    } else {
+      return res.status(404).json({
+        status: "error",
+        mensaje: "La imagen no existe.",
+        existe,
+        fichero,
+        ruta_fisica,
+      });
+    }
+  });
+};
+
+const buscador = (req, res) => {
+  // Sacar el string de busqueda.
+  let busqueda = req.params.busqueda;
+
+  // Find OR.
+  Articulo.find({
+    $or: [
+      { titulo: { $regex: busqueda, $options: "i" } },
+      { contenido: { $regex: busqueda, $options: "i" } },
+    ],
+  })
+    .sort({ fecha: -1 })
+    .exec((error, articulosEncontrados) => {
+      if (error || !articulosEncontrados || articulosEncontrados.length <= 0) {
+        return res.status(404).json({
+          status: "error",
+          mensaje: "No se han encontrado articulos.",
+        });
+      }
+
+      return res
+        .status(200)
+        .json({ status: "success", articulos: articulosEncontrados });
+    });
+
+  // Orden.
+  // Ejecutar consulta.
+  // Devolver resultado.
 };
 
 module.exports = {
@@ -241,4 +289,6 @@ module.exports = {
   borrar,
   editar,
   subir,
+  imagen,
+  buscador,
 };

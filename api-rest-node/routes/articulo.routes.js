@@ -9,6 +9,8 @@ const {
   borrar,
   editar,
   subir,
+  imagen,
+  buscador,
 } = require("../controllers/articulo.controller");
 
 router = express.Router();
@@ -34,5 +36,7 @@ router.get("/articulo/:id", uno); // Se le pone un filtro obligatorio. Sin la ? 
 router.delete("/articulo/:id", borrar); // Ruta para eliminar un documento.
 router.put("/articulo/:id", editar); // Ruta para actualizar un documento.
 router.post("/subir-imagen/:id", subidas.single("file0"), subir);
+router.get("/imagen/:fichero", imagen);
+router.get("/buscar/:busqueda", buscador);
 
 module.exports = router;
