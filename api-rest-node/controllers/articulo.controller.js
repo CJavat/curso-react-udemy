@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { validarArticulo } = require("../helpers/validar");
 const Articulo = require("../models/Articulo");
 
@@ -171,6 +172,66 @@ const editar = (req, res) => {
   );
 };
 
+const subir = (req, res) => {
+  // Configurar multer.
+
+  // Recoger el fichero de imagen subida.
+  if (!req.file && !req.files) {
+    return res
+      .status(404)
+      .json({ status: "error", mensaje: "Peticion invalida" });
+  }
+
+  // Nombre del archivo.
+  let nombreArchivo = req.file.originalname;
+
+  // Extension del archivo.
+  let nombreArchivoSplit = nombreArchivo.split(".");
+  let extension = nombreArchivoSplit[1];
+
+  // Comprobar extension correcta.
+  if (
+    extension != "png" &&
+    extension != "jpg" &&
+    extension != "jpeg" &&
+    extension != "gif"
+  ) {
+    // Borrar archivo y dar respuesta.
+    fs.unlink(req.file.path, (error) => {
+      return res.status(400).json({
+        status: error,
+        mensaje: "Imagen invalida.",
+      });
+    });
+  } else {
+    // Recoger id articulo a editar.
+    let articuloId = req.params.id;
+
+    // Buscar y actualizar artículo.
+    Articulo.findOneAndUpdate(
+      { _id: articuloId },
+      { imagen: req.file.filename },
+      { new: true },
+      (error, articuloActualizado) => {
+        if (error || !articuloActualizado) {
+          return res
+            .status(500)
+            .json({ status: "error", mensaje: "Error al actualizar" });
+        }
+
+        // Devolver respuesta.
+        return res
+          .status(200)
+          .json({
+            status: "success",
+            articulo: articuloActualizado,
+            fichero: req.file,
+          });
+      }
+    );
+  }
+};
+
 module.exports = {
   prueba,
   curso,
@@ -179,4 +240,5 @@ module.exports = {
   uno,
   borrar,
   editar,
+  subir,
 };

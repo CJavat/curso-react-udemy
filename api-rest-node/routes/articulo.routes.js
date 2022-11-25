@@ -1,6 +1,5 @@
 const express = require("express");
-router = express.Router();
-
+const multer = require("multer");
 const {
   prueba,
   curso,
@@ -9,7 +8,20 @@ const {
   uno,
   borrar,
   editar,
+  subir,
 } = require("../controllers/articulo.controller");
+
+router = express.Router();
+const almacenamiento = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./imagenes/articulos/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, "articulo" + Date.now() + file.originalname);
+  },
+});
+
+const subidas = multer({ storage: almacenamiento });
 
 // Ruta de prueba.
 router.get("/ruta-de-prueba", prueba);
@@ -21,5 +33,6 @@ router.get("/articulos/:ultimos?", listar); // Se le pone un filtro opcional. Co
 router.get("/articulo/:id", uno); // Se le pone un filtro obligatorio. Sin la ? significa que es obligatorio el parámetro.
 router.delete("/articulo/:id", borrar); // Ruta para eliminar un documento.
 router.put("/articulo/:id", editar); // Ruta para actualizar un documento.
+router.post("/subir-imagen/:id", subidas.single("file0"), subir);
 
 module.exports = router;
