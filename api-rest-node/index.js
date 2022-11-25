@@ -16,9 +16,14 @@ const PORT = 3900;
 app.use(cors());
 
 // Convertir body a objeto JS.
-app.use(express.json());
+app.use(express.json()); // Recibir datos con Content-Type application/json.
+app.use(express.urlencoded({ extended: true })); // Recibir datos que vienen en form-urlencoded. y los convierte a JSON con el extended.
 
-// Crear rutas.
+// Cargar rutas.
+const rutas_articulo = require("./routes/articulo.routes");
+app.use("/api", rutas_articulo);
+
+// Rutas prueba hardcoreadas.
 app.get("/probando", (req, res) => {
   console.log("Se ha ejecutado el endpoint PROBANDO");
 
@@ -34,14 +39,12 @@ app.get("/probando", (req, res) => {
       url: "daniel.com",
     },
   ]);
-  // res.send("Hola mundo");
 });
 
 app.get("/", (req, res) => {
   return res
     .status(200)
     .send("<h1> Empezando a crear una api rest con node </h1>");
-  // res.send("Hola mundo");
 });
 
 // Crear y escuchar peticiones http.
