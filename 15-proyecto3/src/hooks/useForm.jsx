@@ -20,7 +20,7 @@ export const useForm = (objetoInicial = {}) => {
     let curso = serializarFormulario(e.target); // Sirve para ahorrarte el tener que crear un objeto y poner el e.target.variable.value.
     setFormulario(curso);
 
-    document.querySelector(".codigo").classList.add("enviado");
+    // document.querySelector(".codigo").classList.add("enviado");
   };
 
   const cambiado = ({ target }) => {
