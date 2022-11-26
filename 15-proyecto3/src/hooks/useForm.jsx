@@ -7,6 +7,7 @@ export const useForm = (objetoInicial = {}) => {
     const formData = new FormData(formulario); // El FormData te saca todos los valores del formulario.
 
     const objetoCompleto = {};
+
     for (let [name, value] of formData) {
       objetoCompleto[name] = value;
     }

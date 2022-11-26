@@ -11,7 +11,7 @@ export const Peticion = async (url, metodo, datosGuardar = "") => {
     };
   }
 
-  if (metodo === "POST" || metodo === "PUT") {
+  if (metodo == "POST" || metodo == "PUT") {
     opciones = {
       method: metodo,
       body: JSON.stringify(datosGuardar),
@@ -21,9 +21,8 @@ export const Peticion = async (url, metodo, datosGuardar = "") => {
     };
   }
 
-  const peticion = await fetch(url);
+  const peticion = await fetch(url, opciones);
   const datos = await peticion.json();
-
   cargando = false;
 
   return {

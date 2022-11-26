@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import { useForm } from "../../hooks/useForm";
+import { Global } from "../../helpers/Global";
+import { Peticion } from "../../helpers/Peticion";
 
 export const Crear = () => {
   const { formulario, enviado, cambiado } = useForm({});
+  const [resultado, setResultado] = useState(false);
 
-  const guardarArticulo = (e) => {
+  const guardarArticulo = async (e) => {
     e.preventDefault();
 
     // Recoger datos formulario.
-    let nuevoArticulo = JSON.stringify(formulario);
-
+    let nuevoArticulo = formulario;
     // Guardar articulo en el backend.
+    const { datos, cargando } = await Peticion(
+      Global.url + "crear",
+      "POST",
+      nuevoArticulo
+    );
+
+    if (datos.status === "Success.") {
+      setResultado(true);
+    }
   };
 
   return (
@@ -19,8 +30,9 @@ export const Crear = () => {
       <p>Formulario para crear un articulo</p>
       <pre>{JSON.stringify(formulario)}</pre>
 
+      <strong>{resultado ? "Articulo guardado con exito." : ""}</strong>
       {/* Montar formulario */}
-      <form className="formulario" onSubmit={guardarArticulo}>
+      <form method="POST" className="formulario" onSubmit={guardarArticulo}>
         <div className="form-group">
           <label htmlFor="titulo">Titulo</label>
           <input type="text" name="titulo" id="titulo" onChange={cambiado} />
