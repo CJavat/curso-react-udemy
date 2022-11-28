@@ -5,7 +5,7 @@ import { Peticion } from "../../helpers/Peticion";
 
 export const Crear = () => {
   const { formulario, enviado, cambiado } = useForm({});
-  const [resultado, setResultado] = useState(false);
+  const [resultado, setResultado] = useState("noEnviado");
 
   const guardarArticulo = async (e) => {
     e.preventDefault();
@@ -18,21 +18,53 @@ export const Crear = () => {
       "POST",
       nuevoArticulo
     );
-
+    console.log(datos);
     if (datos.status === "Success.") {
-      setResultado(true);
+      setResultado("datosGuardados");
+
+      // Subir la imágen.
+      const fileInput = document.querySelector("#file0");
+      // Comprobar que si hayan mandado una imagen.
+      if (fileInput.value !== "") {
+        const formData = new FormData(); // FormData funciona para enviar archivos.
+        formData.append("file0", fileInput.files[0]);
+
+        const subida = await Peticion(
+          Global.url + "subir-imagen/" + datos.articulo._id,
+          "POST",
+          formData,
+          true
+        );
+
+        if (subida.datos.status === "success") {
+          setResultado("datosGuardados");
+        } else {
+          setResultado("error");
+        }
+      }
+    } else {
+      setResultado("error");
     }
+
+    document.getElementById("formulario").reset();
   };
 
   return (
     <div className="jumbo">
       <h1>Crear Articulo</h1>
       <p>Formulario para crear un articulo</p>
-      <pre>{JSON.stringify(formulario)}</pre>
 
-      <strong>{resultado ? "Articulo guardado con exito." : ""}</strong>
+      <strong>
+        {resultado === "datosGuardados" ? "Articulo guardado con exito." : ""}
+      </strong>
+      <strong>
+        {resultado === "error"
+          ? "Los datos proporcionados son incorrectos.1"
+          : ""}
+      </strong>
+
       {/* Montar formulario */}
-      <form method="POST" className="formulario" onSubmit={guardarArticulo}>
+      <form id="formulario" className="formulario" onSubmit={guardarArticulo}>
         <div className="form-group">
           <label htmlFor="titulo">Titulo</label>
           <input type="text" name="titulo" id="titulo" onChange={cambiado} />

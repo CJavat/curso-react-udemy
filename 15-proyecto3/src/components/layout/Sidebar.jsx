@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
+  const [buscar, setBuscar] = useState("");
+  const navegaar = useNavigate();
+
+  const hacerBusqueda = (e) => {
+    e.preventDefault();
+    let miBusqueda = e.target.search_field.value;
+    navegaar("buscar/" + miBusqueda, { replace: true });
+  };
+
   return (
     /* Barra lateral */
     <aside className="lateral">
       <div className="search">
         <h3 className="title">Buscador</h3>
-        <form>
-          <input type="text" id="search_field" />
-          <button id="search">Buscar</button>
+        <form onSubmit={hacerBusqueda}>
+          <input type="text" name="search_field" id="search_field" />
+          <input type="submit" id="search" value="Buscar" />
         </form>
       </div>
 

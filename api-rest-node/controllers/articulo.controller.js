@@ -178,9 +178,10 @@ const subir = (req, res) => {
 
   // Recoger el fichero de imagen subida.
   if (!req.file && !req.files) {
-    return res
-      .status(404)
-      .json({ status: "error", mensaje: "Peticion invalida" });
+    return res.status(404).json({
+      status: "error",
+      mensaje: "Peticion invalida " + req.file + req.files,
+    });
   }
 
   // Nombre del archivo.
