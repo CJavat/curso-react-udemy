@@ -22,4 +22,4 @@ const ArticuloSchema = Schema({
 
 // Exportar el modelo:
 module.exports = model("Articulo", ArticuloSchema, "articulos");
-// Sintaxis: model("nombreDelModelo", nombreDelEsquema, (Opcional: nombreDeConexión));
+// Sintaxis: model("nombreDelModelo", nombreDelEsquema, (Opcional: nombreDeCollection));

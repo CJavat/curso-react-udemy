@@ -1,11 +1,18 @@
 // Importar dependencias y módulos.
 const bcrypt = require("bcrypt");
+const mongoosePagination = require("mongoose-pagination");
+
+// Importar modelos.
 const User = require("../models/user.model");
+
+// Importar servicios.
+const jwt = require("../services/jwt");
 
 // Acciones de prueba.
 const pruebaUser = (req, res) => {
   return res.status(200).send({
     message: "Mensaje enviado desde: controllers/user.js",
+    usuario: req.user,
   });
 };
 
@@ -97,7 +104,7 @@ const login = (req, res) => {
         });
       }
       // Conseguir Token.
-      const token = false;
+      const token = jwt.createToken(user);
 
       // Devolver Datos del usuario.
       return res.status(200).json({
@@ -113,9 +120,71 @@ const login = (req, res) => {
     });
 };
 
+const profile = (req, res) => {
+  // Recibir el parametro del ID de usuario por la URL.
+  const id = req.params.id;
+
+  // Hacer una consulta par a sacar los datos del usuario.
+  User.findById(id)
+    .select({ password: 0, role: 0 })
+    .exec((error, userProfile) => {
+      if (error || !userProfile) {
+        res.status(404).send({
+          status: "error",
+          message: "El usuario no existe o hay un error.",
+        });
+      }
+
+      // Devolver el resultado.
+      // Posteriormente: devolver informacion de follows.
+      res.status(200).send({
+        status: "success",
+        message: "Datos guardados exitosamente.",
+        user: userProfile,
+      });
+    });
+};
+
+const list = (req, res) => {
+  // Controlar en que pagina estamos.
+  let page = 1;
+
+  if (req.params.page) {
+    page = req.params.page;
+  }
+  page = parseInt(page);
+
+  // Hacer la consulta con Mongoose Paginate.
+  let itemsPerPage = 5;
+
+  User.find()
+    .sort("_id")
+    .paginate(page, itemsPerPage, (error, users, total) => {
+      if (error || !users) {
+        res.status(404).send({
+          status: "error",
+          message: "No hay usuarios disponibles.",
+          error,
+        });
+      }
+
+      // Devolver resultado. (Posteriormente: info de follows)
+      res.status(200).send({
+        status: "success",
+        users,
+        page,
+        itemsPerPage,
+        total,
+        pages: Math.ceil(total / itemsPerPage),
+      });
+    });
+};
+
 // Exportar acciones.
 module.exports = {
   pruebaUser,
   register,
   login,
+  profile,
+  list,
 };
