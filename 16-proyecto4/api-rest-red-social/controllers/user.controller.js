@@ -9,6 +9,7 @@ const User = require("../models/user.model");
 
 // Importar servicios.
 const jwt = require("../services/jwt");
+const followService = require("../services/followService");
 
 // Acciones de prueba.
 const pruebaUser = (req, res) => {
@@ -131,7 +132,7 @@ const profile = (req, res) => {
   // Hacer una consulta par a sacar los datos del usuario.
   User.findById(id)
     .select({ password: 0, role: 0 })
-    .exec((error, userProfile) => {
+    .exec(async (error, userProfile) => {
       if (error || !userProfile) {
         res.status(404).send({
           status: "error",
@@ -139,12 +140,16 @@ const profile = (req, res) => {
         });
       }
 
-      // Devolver el resultado.
+      // Info de seguimiento.
+      const followInfo = await followService.followThisUser(req.user.id, id);
+
       // Posteriormente: devolver informacion de follows.
       res.status(200).send({
         status: "success",
         message: "Datos guardados exitosamente.",
         user: userProfile,
+        following: followInfo.following,
+        follower: followInfo.follower,
       });
     });
 };

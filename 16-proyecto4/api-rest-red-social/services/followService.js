@@ -32,7 +32,25 @@ const followUserIds = async (identityUserId) => {
   }
 };
 
-const followThisUser = async (identityUserId, profileUserId) => {};
+const followThisUser = async (identityUserId, profileUserId) => {
+  // Sacar info de seguimiento.
+  let following = await Follow.findOne({
+    user: identityUserId,
+    followed: profileUserId,
+  })
+    .select({ followed: 1, _id: 0 })
+    .exec();
+
+  let follower = await Follow.findOne({
+    user: profileUserId,
+    followed: identityUserId,
+  });
+
+  return {
+    following,
+    follower,
+  };
+};
 
 module.exports = {
   followUserIds,
