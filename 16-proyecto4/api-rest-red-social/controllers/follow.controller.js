@@ -111,10 +111,36 @@ const following = (req, res) => {
 
 // Acción listado de usuarios que siguen a cualquier otro usuario. (Todos los que me están siguiendo | seguidores)
 const followers = (req, res) => {
-  return res.status(200).send({
-    status: "success",
-    message: "Listado de usuarios que me están siguiendo.",
-  });
+  // Sacar el id del usuario identificado.
+  let userId = req.user.id;
+
+  // Comprobar si me llega el id por parametro en la url.
+  if (req.params.id) userId = req.params.id;
+
+  // Comprobar si me llega la página, sino llega sera la página 1.
+  let page = 1;
+
+  if (req.params.page) page = req.params.page;
+
+  // Usuarios por pagina quiero mostrar.
+  const itemsPerPage = 5;
+
+  // Find a follow, popular datos de los usuarios, paginar con mongoose pagination.
+  Follow.find({ followed: userId })
+    .populate("user", "-password -role -__v") // El primer parámetro indica lo que quieres filtar, y el segundo parametro los campos que no quieres que se vean
+    .paginate(page, itemsPerPage, async (error, follows, total) => {
+      let followUserIds = await followService.followUserIds(req.user.id);
+
+      return res.status(200).send({
+        status: "success",
+        message: "Listado de usuarios que me siguen.",
+        follows,
+        total,
+        pages: Math.ceil(total / itemsPerPage),
+        user_following: followUserIds.followingClean,
+        user_follow_me: followUserIds.followersClean,
+      });
+    });
 };
 
 // Exportar acciones.

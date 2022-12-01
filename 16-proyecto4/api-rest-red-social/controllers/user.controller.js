@@ -169,7 +169,7 @@ const list = (req, res) => {
 
   User.find()
     .sort("_id")
-    .paginate(page, itemsPerPage, (error, users, total) => {
+    .paginate(page, itemsPerPage, async (error, users, total) => {
       if (error || !users) {
         res.status(404).send({
           status: "error",
@@ -177,6 +177,9 @@ const list = (req, res) => {
           error,
         });
       }
+
+      // Array de IDs de usuarios que me siguen y los que sigo como Daniel.
+      let followUserIds = await followService.followUserIds(req.user.id);
 
       // Devolver resultado. (Posteriormente: info de follows)
       res.status(200).send({
@@ -186,6 +189,8 @@ const list = (req, res) => {
         itemsPerPage,
         total,
         pages: Math.ceil(total / itemsPerPage),
+        user_following: followUserIds.followingClean, // Mostrar los ids de los que sigo.
+        user_follow_me: followUserIds.followersClean, // Mostrar los ids de los que me siguen.
       });
     });
 };
