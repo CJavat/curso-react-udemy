@@ -11,6 +11,7 @@ const {
   user,
   upload,
   media,
+  feed,
 } = require("../controllers/publication.controller");
 
 // Configuración de subida.
@@ -31,7 +32,8 @@ router.get("/detail/:id", check.auth, detail);
 router.delete("/remove/:id", check.auth, remove);
 router.get("/user/:id/:page?", check.auth, user);
 router.post("/upload/:id", [check.auth, uploads.single("file0")], upload);
-router.get("/media/:file", check.auth, media);
+router.get("/media/:file", media);
+router.get("/feed/:page/", check.auth, feed);
 
 // Exportar el ruter.
 module.exports = router;

@@ -24,6 +24,7 @@ const {
   update,
   upload,
   avatar,
+  counters,
 } = require("../controllers/user.controller");
 
 // Definir las rutas.
@@ -34,7 +35,8 @@ router.get("/profile/:id", check.auth, profile);
 router.get("/list/:page?", check.auth, list);
 router.put("/update", check.auth, update);
 router.post("/upload", [check.auth, uploads.single("file0")], upload);
-router.get("/avatar/:file", check.auth, avatar);
+router.get("/avatar/:file", avatar);
+router.get("/counters/:id", check.auth, counters);
 
 // Exportar el ruter.
 module.exports = router;

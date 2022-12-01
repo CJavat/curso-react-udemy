@@ -91,7 +91,7 @@ const following = (req, res) => {
 
   // Find a follow, popular datos de los usuarios, paginar con mongoose pagination.
   Follow.find({ user: userId })
-    .populate("user followed", "-password -role -__v") // El primer parámetro indica lo que quieres filtar, y el segundo parametro los campos que no quieres que se vean
+    .populate("user followed", "-password -role -__v -email") // El primer parámetro indica lo que quieres filtar, y el segundo parametro los campos que no quieres que se vean
     .paginate(page, itemsPerPage, async (error, follows, total) => {
       // Listado de usuarios de trinity, y soy Daniel.
       // Array de IDs de usuarios que me siguen y los que sigo como Daniel.
@@ -127,7 +127,7 @@ const followers = (req, res) => {
 
   // Find a follow, popular datos de los usuarios, paginar con mongoose pagination.
   Follow.find({ followed: userId })
-    .populate("user", "-password -role -__v") // El primer parámetro indica lo que quieres filtar, y el segundo parametro los campos que no quieres que se vean
+    .populate("user", "-password -role -__v -email") // El primer parámetro indica lo que quieres filtar, y el segundo parametro los campos que no quieres que se vean
     .paginate(page, itemsPerPage, async (error, follows, total) => {
       let followUserIds = await followService.followUserIds(req.user.id);
 
