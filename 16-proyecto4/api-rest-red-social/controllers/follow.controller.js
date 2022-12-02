@@ -100,11 +100,11 @@ const following = (req, res) => {
       return res.status(200).send({
         status: "success",
         message: "Listado de usuarios que estoy siguiendo.",
-        //follows,
-        // total,
-        // pages: Math.ceil(total / itemsPerPage),
-        user_following: followUserIds.followingClean,
-        user_follow_me: followUserIds.followersClean,
+        follows,
+        total,
+        pages: Math.ceil(total / itemsPerPage),
+        user_following: followUserIds.following,
+        user_follow_me: followUserIds.followers,
       });
     });
 };
