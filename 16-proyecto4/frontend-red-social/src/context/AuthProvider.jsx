@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
 
     // Comprobar si tengo el token y el user.
     if (!token || !user) {
+      setLoading(false);
       return false;
     }
 
@@ -53,7 +54,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, counters, loading }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, counters, setCounters, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
