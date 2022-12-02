@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import avatar from "../../../assets/img/user.png";
 import { Global } from "../../../helpers/Global";
 import useAuth from "../../../hooks/useAuth";
 
 export const Sidebar = () => {
-  const { auth, counters } = useAuth();
+  const { auth, counters, setCounters } = useAuth();
 
   return (
     <aside className="layout__aside">
@@ -42,16 +43,19 @@ export const Sidebar = () => {
 
           <div className="profile-info__stats">
             <div className="stats__following">
-              <a href="#" className="following__link">
+              <NavLink to={"siguiendo/" + auth._id} className="following__link">
                 <span className="following__title">Siguiendo</span>
                 <span className="following__number">{counters.following}</span>
-              </a>
+              </NavLink>
             </div>
             <div className="stats__following">
-              <a href="#" className="following__link">
+              <NavLink
+                to={"seguidores/" + auth._id}
+                className="following__link"
+              >
                 <span className="following__title">Seguidores</span>
                 <span className="following__number">{counters.followed}</span>
-              </a>
+              </NavLink>
             </div>
 
             <div className="stats__following">

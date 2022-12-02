@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Global } from "../../helpers/Global";
 import useAuth from "../../hooks/useAuth";
-import { UserList } from "./UserList";
+import { UserList } from "../user/UserList";
 
-export const People = () => {
+export const Following = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
@@ -11,6 +12,7 @@ export const People = () => {
   const [loading, setLoading] = useState(true);
 
   const { authUser } = useAuth();
+  const params = useParams();
 
   useEffect(() => {
     getUsers(1);
@@ -25,29 +27,35 @@ export const People = () => {
     // Efecto de carga.
     setLoading(true);
 
-    // Hacer peticion para sacar usuarios.
-    const request = await fetch(Global.url + "user/list/" + nextPage, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-    const data = await request.json();
+    // Sacar userId de la url.
+    const userId = params.userId;
 
+    // Hacer peticion para sacar usuarios.
+    const request = await fetch(
+      Global.url + "follow/following/" + userId + "/" + nextPage,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    const data = await request.json();
+    console.log(data.follows);
     // Crear un estado para poder listarlos.
-    if (data.users && data.status === "success") {
-      let newUsers = data.users;
+    if (data.follows && data.status === "success") {
+      let newUsers = data.follows;
 
       if (users.length >= 1) {
-        newUsers = [...users, ...data.users];
+        newUsers = [...users, ...data.follows];
       }
       setUsers(newUsers);
       setFollowing(data.user_following);
       setLoading(false);
 
       // Paginacion.
-      if (users.length >= data.total - users.length) {
+      if (users.length >= data.total - data.follows.length) {
         setMore(false);
       }
     }
@@ -56,7 +64,7 @@ export const People = () => {
   return (
     <>
       <header className="content__header">
-        <h1 className="content__title">Gente</h1>
+        <h1 className="content__title">Usuarios que sigue "Nombre"</h1>
       </header>
 
       <UserList
