@@ -192,8 +192,8 @@ const list = (req, res) => {
         itemsPerPage,
         total,
         pages: Math.ceil(total / itemsPerPage),
-        user_following: followUserIds.followingClean, // Mostrar los ids de los que sigo.
-        user_follow_me: followUserIds.followersClean, // Mostrar los ids de los que me siguen.
+        user_following: followUserIds.following, // Mostrar los ids de los que sigo.
+        user_follow_me: followUserIds.followers, // Mostrar los ids de los que me siguen.
       });
     });
 };
