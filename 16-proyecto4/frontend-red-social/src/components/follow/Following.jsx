@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { GetProfile } from "../../helpers/GetProfile";
 import { Global } from "../../helpers/Global";
 import useAuth from "../../hooks/useAuth";
 import { UserList } from "../user/UserList";
@@ -10,12 +11,14 @@ export const Following = () => {
   const [more, setMore] = useState(true);
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState({});
 
   const { authUser } = useAuth();
   const params = useParams();
 
   useEffect(() => {
     getUsers(1);
+    GetProfile(params.userId, setUserProfile);
   }, []);
 
   // Actualizar en tiempo real los seguidores.
@@ -49,7 +52,6 @@ export const Following = () => {
       cleanUsers = [...cleanUsers, follow.followed];
     });
     data.users = cleanUsers;
-    console.log(data.users);
 
     // Crear un estado para poder listarlos.
     if (data.users && data.status === "success") {
@@ -73,7 +75,9 @@ export const Following = () => {
   return (
     <>
       <header className="content__header">
-        <h1 className="content__title">Usuarios que sigue "Nombre"</h1>
+        <h1 className="content__title">
+          Usuarios que sigue {userProfile.name} {userProfile.surname}
+        </h1>
       </header>
 
       <UserList
