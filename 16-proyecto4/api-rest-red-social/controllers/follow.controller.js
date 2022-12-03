@@ -137,8 +137,8 @@ const followers = (req, res) => {
         follows,
         total,
         pages: Math.ceil(total / itemsPerPage),
-        user_following: followUserIds.followingClean,
-        user_follow_me: followUserIds.followersClean,
+        user_following: followUserIds.following,
+        user_follow_me: followUserIds.followers,
       });
     });
 };

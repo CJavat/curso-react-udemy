@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Global } from "../../helpers/Global";
 import useAuth from "../../hooks/useAuth";
 import { UserList } from "../user/UserList";
@@ -11,6 +12,7 @@ export const Followers = () => {
   const [loading, setLoading] = useState(true);
 
   const { authUser } = useAuth();
+  const params = useParams();
 
   useEffect(() => {
     getUsers(1);
@@ -25,15 +27,28 @@ export const Followers = () => {
     // Efecto de carga.
     setLoading(true);
 
+    // Sacar userId de la url.
+    const userId = params.userId;
+
     // Hacer peticion para sacar usuarios.
-    const request = await fetch(Global.url + "user/list/" + nextPage, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    });
+    const request = await fetch(
+      Global.url + "follow/followers/" + userId + "/" + nextPage,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
     const data = await request.json();
+
+    // Recorrer y limpiar follows para quedarme con followed.
+    let cleanUsers = [];
+    data.follows.forEach((follow) => {
+      cleanUsers = [...cleanUsers, follow.user];
+    });
+    data.users = cleanUsers;
 
     // Crear un estado para poder listarlos.
     if (data.users && data.status === "success") {
@@ -42,12 +57,13 @@ export const Followers = () => {
       if (users.length >= 1) {
         newUsers = [...users, ...data.users];
       }
+
       setUsers(newUsers);
       setFollowing(data.user_following);
       setLoading(false);
 
       // Paginacion.
-      if (users.length >= data.total - users.length) {
+      if (users.length >= data.total - data.users.length) {
         setMore(false);
       }
     }
@@ -56,7 +72,7 @@ export const Followers = () => {
   return (
     <>
       <header className="content__header">
-        <h1 className="content__title">Gente</h1>
+        <h1 className="content__title">Seguidores de: "Nombre"</h1>
       </header>
 
       <UserList

@@ -42,20 +42,29 @@ export const Following = () => {
       }
     );
     const data = await request.json();
-    console.log(data.follows);
+
+    // Recorrer y limpiar follows para quedarme con followed.
+    let cleanUsers = [];
+    data.follows.forEach((follow) => {
+      cleanUsers = [...cleanUsers, follow.followed];
+    });
+    data.users = cleanUsers;
+    console.log(data.users);
+
     // Crear un estado para poder listarlos.
-    if (data.follows && data.status === "success") {
-      let newUsers = data.follows;
+    if (data.users && data.status === "success") {
+      let newUsers = data.users;
 
       if (users.length >= 1) {
-        newUsers = [...users, ...data.follows];
+        newUsers = [...users, ...data.users];
       }
+
       setUsers(newUsers);
       setFollowing(data.user_following);
       setLoading(false);
 
       // Paginacion.
-      if (users.length >= data.total - data.follows.length) {
+      if (users.length >= data.total - data.users.length) {
         setMore(false);
       }
     }

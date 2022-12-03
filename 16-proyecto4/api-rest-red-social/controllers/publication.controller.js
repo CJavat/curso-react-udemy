@@ -173,17 +173,24 @@ const upload = (req, res) => {
       fileDelete,
     });
   }
-
+  const filter = { user: req.user.id, _id: publicationId };
+  const file = { file: req.file.filename };
+  // console.log(file);
+  // console.log(filter);
   // Si sí es correcta, guardar imagen en DB.
   Publication.findOneAndUpdate(
-    { user: req.user.id, _id: publicationId },
-    { file: req.file.filename },
+    filter,
+    file,
     { new: true },
     (error, publicationUpdate) => {
       if (error || !publicationUpdate) {
         return res.status(500).send({
           status: "error",
           message: "Error en la subida de la publicación.",
+          error,
+          publicationUpdate,
+          image,
+          user,
         });
       }
 
