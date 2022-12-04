@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import avatar from "../../../assets/img/user.png";
 import { Global } from "../../../helpers/Global";
 import useAuth from "../../../hooks/useAuth";
@@ -38,6 +38,8 @@ export const Sidebar = () => {
     // Mostrar mensaje de exito o error.
     if (data.status === "success") {
       setStored("saved");
+      const myForm = document.getElementById("publication-form");
+      myForm.reset();
     } else {
       setStored("error");
     }
@@ -99,35 +101,38 @@ export const Sidebar = () => {
             </div>
 
             <div className="general-info__container-names">
-              <NavLink
+              <Link
                 to={"/social/perfil/" + auth._id}
                 className="container-names__name"
               >
                 {auth.name} {auth.surname}
-              </NavLink>
+              </Link>
               <p className="container-names__nickname">{auth.nick}</p>
             </div>
           </div>
 
           <div className="profile-info__stats">
             <div className="stats__following">
-              <NavLink to={"siguiendo/" + auth._id} className="following__link">
+              <Link
+                to={"/social/siguiendo/" + auth._id}
+                className="following__link"
+              >
                 <span className="following__title">Siguiendo</span>
                 <span className="following__number">{counters.following}</span>
-              </NavLink>
+              </Link>
             </div>
             <div className="stats__following">
-              <NavLink
-                to={"seguidores/" + auth._id}
+              <Link
+                to={"/social/seguidores/" + auth._id}
                 className="following__link"
               >
                 <span className="following__title">Seguidores</span>
                 <span className="following__number">{counters.followed}</span>
-              </NavLink>
+              </Link>
             </div>
 
             <div className="stats__following">
-              <NavLink
+              <Link
                 to={"/social/perfil/" + auth._id}
                 className="following__link"
               >
@@ -135,7 +140,7 @@ export const Sidebar = () => {
                 <span className="following__number">
                   {counters.publications}
                 </span>
-              </NavLink>
+              </Link>
             </div>
           </div>
         </div>
