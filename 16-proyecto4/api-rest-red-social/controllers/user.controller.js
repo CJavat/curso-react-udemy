@@ -102,7 +102,7 @@ const login = (req, res) => {
 
       // Comprobar su contraseña.
       const pass = bcrypt.compareSync(params.password, user.password);
-      console.log(pass);
+
       if (!pass) {
         return res.status(400).json({
           status: "error",

@@ -42,9 +42,9 @@ const followThisUser = async (identityUserId, profileUserId) => {
     .exec();
 
   let follower = await Follow.findOne({
-    user: profileUserId,
-    followed: identityUserId,
-  });
+    user: identityUserId,
+    followed: profileUserId,
+  }).select({ user: 1, _id: 0 });
 
   return {
     following,
