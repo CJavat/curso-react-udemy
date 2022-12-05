@@ -12,6 +12,7 @@ const Publication = require("../models/publication.model");
 // Importar servicios.
 const jwt = require("../services/jwt");
 const followService = require("../services/followService");
+const validate = require("../helpers/validate");
 
 // Acciones de prueba.
 const pruebaUser = (req, res) => {
@@ -31,6 +32,17 @@ const register = (req, res) => {
     return res.status(400).json({
       status: "error",
       message: "Faltan datos por enviar.",
+    });
+  }
+
+  // Validación avanzada.
+  try {
+    validate(params);
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Validación no superada.",
+      error,
     });
   }
 
