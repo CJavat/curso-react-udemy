@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import avatar from "../../assets/img/user.png";
 import { Global } from "../../helpers/Global";
 import useAuth from "../../hooks/useAuth";
-import ReactTimeAgo from "react-time-ago";
+// import ReactTimeAgo from "react-time-ago";
 
 export const PublicationList = ({
   publications,
